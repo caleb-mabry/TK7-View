@@ -113,8 +113,8 @@ export default {
     },
     characterData(character) {
       console.log("char", character);
-      console.log("http://localhost:8080/json/" + character + ".json")
-      fetch("http://localhost:8080/json/" + character + ".json")
+      console.log(window.location.href + "json/" + character + ".json")
+      fetch(window.location.href + "json/" + character + ".json")
         .then((res) => res.json())
         .then((dat) => this.bark = dat);
     },
