@@ -157,12 +157,17 @@ export default {
   width: 15%;
   background-color: white;
   height: 800px;
-    overflow-x: scroll;
+    overflow-x: hidden;
+  overflow-y: scroll;
+
 }
 .moves {
-  width: 85%;
-  overflow-x: scroll;
-  height: 800px;
+  width: 90%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+    height: 800px;
+  padding-right: 6px;
+
 }
 .move {
   width: 100%;
