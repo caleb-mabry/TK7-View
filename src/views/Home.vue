@@ -8,34 +8,30 @@
         @click="setSelected(character)"
       >{{ character }}</div>
     </div>
-    <div class="moves">
-      <div v-for="(item, index) in bark" :key="index + 1" class="move">
-        <div class="move_number">{{index + 1}}</div>
-        <div class="move_information">
-          <div class="move_name">{{ item.move }}</div>
-          <div class="move_inputs">
-            <div v-for="item in item.inputs" :key="item.id" class="input">{{ item }}</div>
-          </div>
-          <div class="move_types">
-            <div v-for="item in item.type" :key="item.id">{{ item }}</div>
-          </div>
+        <transition mode="out-in" name="component-fade">
+      <div v-if="loading" class="loading" key="loading">
+        <h1>Loading</h1>
         </div>
-        <div class="move_einformation">
-          <div class="start_up">Start: {{item.start_up}}</div>
-          <div class="block">Block: {{item.block}}</div>
-          <div class="hit">Hit: {{item.nh}}</div>
+      <div v-else class="moves" key="loaded">
+        <div v-for="(item, index) in bark" :key="index + 1" class="move">
+          <div class="move_number">{{index + 1}}</div>
+          <div class="move_information">
+            <div class="move_name">{{ item.move }}</div>
+            <div class="move_inputs">
+              <div v-for="item in item.inputs" :key="item.id" class="input">{{ item }}</div>
+            </div>
+            <div class="move_types">
+              <div v-for="item in item.type" :key="item.id">{{ item }}</div>
+            </div>
+          </div>
+          <div class="move_einformation">
+            <div class="start_up">Start: {{item.start_up}}</div>
+            <div class="block">Block: {{item.block}}</div>
+            <div class="hit">Hit: {{item.nh}}</div>
+          </div>
         </div>
       </div>
-
-      <!-- <p>Inputs: {{item.inputs}}</p>
-      <p>Type: {{item.type}}</p>
-      <p>Damage: {{item.damage}}</p>
-      <p>Start-up: {{item.start_up}}</p>
-      <p>Block: {{item.block}}</p>
-      <p>NH: {{item.nh}}</p>
-      <p>CH: {{item.ch}}</p>
-      <p>Total: {{item.total}}</p>-->
-    </div>
+        </transition>
   </div>
 </template>
 
@@ -49,6 +45,7 @@ export default {
       publicPath: process.env.BASE_URL,
       itemCount: 0,
       bark: {},
+      loading: true,
       selectedCharacter: "alisa",
       characterNames: [
         "gouki",
@@ -102,7 +99,10 @@ export default {
       ],
     };
   },
-  methods: {
+  mounted () {
+    this.characterData('alisa');
+  },
+   methods: {
     upIndex() {
       this.itemCount += 1;
       return this.itemCount;
@@ -112,11 +112,13 @@ export default {
       this.characterData(arg)
     },
     characterData(character) {
-      console.log("char", character);
-      console.log(window.location.href + "json/" + character + ".json")
+      this.loading = true;
       fetch(window.location.href + "json/" + character + ".json")
         .then((res) => res.json())
-        .then((dat) => this.bark = dat);
+        .then((dat) => {this.bark = dat
+        this.loading = false
+        });
+        
     },
   },
   computed: {
@@ -129,21 +131,38 @@ export default {
 
 <style scoped>
 .home {
-  padding: 3%;
   display: flex;
+  height: 100%;
+  padding: 3%;
+}
+.loading {
+  display: flex;
+  width:85%;
+  color: whitesmoke;
+  align-items: center;
+  justify-content: center;
+  height: 800px;
 }
 .character {
-  padding: 1%;
+  padding: 5%;
+  background-color: #293037;
+  transition: all .2s;
+  color: whitesmoke;
+  text-transform: capitalize;
 }
 .character:hover {
-  background-attachment: blue;
+  background-color: #2d393f;
 }
 .characters {
   width: 15%;
   background-color: white;
+  height: 800px;
+    overflow-x: scroll;
 }
 .moves {
-  width: 80%;
+  width: 85%;
+  overflow-x: scroll;
+  height: 800px;
 }
 .move {
   width: 100%;
@@ -200,5 +219,48 @@ export default {
 p {
   padding: 0px;
   margin: 0px;
+}
+
+/* Transition Group Animation Settings */
+.list-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+.list-enter-active, .list-leave-active {
+  transition: all 1s;
+}
+.list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 10s
+}
+
+.fade-enter,
+.fade-leave-to {
+    opacity: 0
+}
+
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
+.component-fade-enter-active, .component-fade-leave-active {
+  transition: opacity .3s ease;
+}
+.component-fade-enter, .component-fade-leave-to
+/* .component-fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
