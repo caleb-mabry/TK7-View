@@ -151,7 +151,9 @@ export default {
 .home {
   display: flex;
   flex-wrap: wrap;
-  height: 100%;
+  align-content: center;
+  justify-content: center;
+  height: 90%;
   padding: 1%;
 }
 .loading {
@@ -179,7 +181,7 @@ export default {
 .characters {
   width: 15%;
   background-color: white;
-  height: 800px;
+  height: 90%;
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -187,7 +189,8 @@ export default {
   width: 80%;
   overflow-x: hidden;
   overflow-y: scroll;
-  height: 800px;
+  height: 90%;
+
   padding-right: 6px;
 }
 .move {
@@ -300,21 +303,27 @@ p {
   box-shadow: 1px 1px 1px 1px #00d9ff;
 }
 @media only screen and (max-width: 800px) {
+  .home {
+    padding-top: 5%;
+  }
   .characters {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    height: 200px;
+    height: 25%;
+    border: 2px solid lightblue;
     justify-content: space-evenly;
     background-color: #293037;
   }
   .character {
-    width: 15%;
+    padding: 2%;
+    width: 20%;
     text-align: center;
-    height: fit-content;
   }
   .moves {
+    margin-top: 2%;
     width: 100%;
+    height: 75%;
   }
 }
 </style>
