@@ -8,17 +8,21 @@
         @click="setSelected(character)"
       >{{ character }}</div>
     </div>
-        <transition mode="out-in" name="component-fade">
+    <transition mode="out-in" name="component-fade">
       <div v-if="loading" class="loading" key="loading">
         <h1>Loading</h1>
-        </div>
+      </div>
       <div v-else class="moves" key="loaded">
         <div v-for="(item, index) in bark" :key="index + 1" class="move">
           <div class="move_number">{{index + 1}}</div>
           <div class="move_information">
             <div class="move_name">{{ item.move }}</div>
             <div class="move_inputs">
-              <div v-for="item in item.inputs" :key="item.id" class="input">{{ item }}</div>
+              <div v-for="item in item.inputs" :key="item.id" class="input">
+                <img class="item" v-if="isItem(item)" :src="require('../assets/' + item + '.webp')" />
+                <div v-else>{{item}}</div>
+
+              </div>
             </div>
             <div class="move_types">
               <div v-for="item in item.type" :key="item.id">{{ item }}</div>
@@ -31,7 +35,7 @@
           </div>
         </div>
       </div>
-        </transition>
+    </transition>
   </div>
 </template>
 
@@ -99,27 +103,40 @@ export default {
       ],
     };
   },
-  mounted () {
-    this.characterData('alisa');
+  mounted() {
+    this.characterData("alisa");
   },
-   methods: {
+  methods: {
     upIndex() {
       this.itemCount += 1;
       return this.itemCount;
     },
     setSelected(arg) {
       this.selectedCharacter = arg;
-      this.characterData(arg)
+      this.characterData(arg);
     },
     characterData(character) {
       this.loading = true;
       fetch(window.location.href + "json/" + character + ".json")
         .then((res) => res.json())
-        .then((dat) => {this.bark = dat
-        this.loading = false
+        .then((dat) => {
+          this.bark = dat;
+          this.loading = false;
         });
-        
     },
+    isItem(input) {
+      let isImg = false;
+      console.log(input)
+      try {
+        require('../assets/'+input+'.webp')
+        isImg = true;
+      }
+      catch {
+       console.log('Fake')
+       isImg = false
+      }
+      return isImg
+    }
   },
   computed: {
     totalLength() {
@@ -130,6 +147,10 @@ export default {
 </script>
 
 <style scoped>
+.item {
+width: 30px;
+height: 30px;
+}
 .home {
   display: flex;
   height: 100%;
@@ -137,7 +158,7 @@ export default {
 }
 .loading {
   display: flex;
-  width:85%;
+  width: 85%;
   color: whitesmoke;
   align-items: center;
   justify-content: center;
@@ -146,7 +167,7 @@ export default {
 .character {
   padding: 5%;
   background-color: #293037;
-  transition: all .2s;
+  transition: all 0.2s;
   color: whitesmoke;
   text-transform: capitalize;
 }
@@ -157,17 +178,15 @@ export default {
   width: 15%;
   background-color: white;
   height: 800px;
-    overflow-x: hidden;
+  overflow-x: hidden;
   overflow-y: scroll;
-
 }
 .moves {
   width: 90%;
   overflow-x: hidden;
   overflow-y: scroll;
-    height: 800px;
+  height: 800px;
   padding-right: 6px;
-
 }
 .move {
   width: 100%;
@@ -231,7 +250,8 @@ p {
   display: inline-block;
   margin-right: 10px;
 }
-.list-enter-active, .list-leave-active {
+.list-enter-active,
+.list-leave-active {
   transition: all 1s;
 }
 .list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
@@ -241,19 +261,19 @@ p {
 
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 10s
+  transition: opacity 10s;
 }
 
 .fade-enter,
 .fade-leave-to {
-    opacity: 0
+  opacity: 0;
 }
 
 .slide-fade-enter-active {
-  transition: all .3s ease;
+  transition: all 0.3s ease;
 }
 .slide-fade-leave-active {
-  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .slide-fade-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active below version 2.1.8 */ {
@@ -261,8 +281,9 @@ p {
   opacity: 0;
 }
 
-.component-fade-enter-active, .component-fade-leave-active {
-  transition: opacity .3s ease;
+.component-fade-enter-active,
+.component-fade-leave-active {
+  transition: opacity 0.3s ease;
 }
 .component-fade-enter, .component-fade-leave-to
 /* .component-fade-leave-active below version 2.1.8 */ {
