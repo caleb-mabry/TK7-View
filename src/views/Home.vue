@@ -6,6 +6,7 @@
         :key="character"
         class="character"
         @click="setSelected(character)"
+        :class="{active: selectedCharacter == character}"
       >{{ character }}</div>
     </div>
     <transition mode="out-in" name="component-fade">
@@ -21,7 +22,6 @@
               <div v-for="item in item.inputs" :key="item.id" class="input">
                 <img class="item" v-if="isItem(item)" :src="require('../assets/' + item + '.webp')" />
                 <div v-else>{{item}}</div>
-
               </div>
             </div>
             <div class="move_types">
@@ -126,17 +126,14 @@ export default {
     },
     isItem(input) {
       let isImg = false;
-      console.log(input)
       try {
-        require('../assets/'+input+'.webp')
+        require("../assets/" + input + ".webp");
         isImg = true;
+      } catch {
+        isImg = false;
       }
-      catch {
-       console.log('Fake')
-       isImg = false
-      }
-      return isImg
-    }
+      return isImg;
+    },
   },
   computed: {
     totalLength() {
@@ -148,13 +145,14 @@ export default {
 
 <style scoped>
 .item {
-width: 30px;
-height: 30px;
+  width: 30px;
+  height: 30px;
 }
 .home {
   display: flex;
+  flex-wrap: wrap;
   height: 100%;
-  padding: 3%;
+  padding: 1%;
 }
 .loading {
   display: flex;
@@ -166,13 +164,17 @@ height: 30px;
 }
 .character {
   padding: 5%;
+  margin: 1px;
   background-color: #293037;
   transition: all 0.2s;
   color: whitesmoke;
   text-transform: capitalize;
+  border: 2px solid gray;
 }
 .character:hover {
-  background-color: #2d393f;
+  background-color: #004f81;
+  border-color: #00d9ff;
+  box-shadow: 1px 1px 1px 1px #00d9ff;
 }
 .characters {
   width: 15%;
@@ -182,7 +184,7 @@ height: 30px;
   overflow-y: scroll;
 }
 .moves {
-  width: 90%;
+  width: 80%;
   overflow-x: hidden;
   overflow-y: scroll;
   height: 800px;
@@ -215,6 +217,8 @@ height: 30px;
 .move_inputs {
   display: flex;
   width: 100%;
+  align-content: center;
+  text-align: center;
   flex-direction: row;
 }
 .move_types {
@@ -234,6 +238,7 @@ height: 30px;
 }
 .input {
   padding: 3px;
+  align-self: center;
 }
 .move:hover {
   background-color: #004f81;
@@ -288,5 +293,28 @@ p {
 .component-fade-enter, .component-fade-leave-to
 /* .component-fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+.active {
+  background-color: #004f81;
+  border-color: #00d9ff;
+  box-shadow: 1px 1px 1px 1px #00d9ff;
+}
+@media only screen and (max-width: 800px) {
+  .characters {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    height: 200px;
+    justify-content: space-evenly;
+    background-color: #293037;
+  }
+  .character {
+    width: 15%;
+    text-align: center;
+    height: fit-content;
+  }
+  .moves {
+    width: 100%;
+  }
 }
 </style>
