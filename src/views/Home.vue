@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <h1 class="header">Tekken 7 Prettier Movelist</h1>
     <div class="characters">
       <div
         v-for="character in characterNames"
@@ -148,12 +149,20 @@ export default {
   width: 30px;
   height: 30px;
 }
+.header {
+  display: flex;
+  width: 100%;
+  color: whitesmoke;
+}
+h1 {
+  padding: 2%;
+}
 .home {
   display: flex;
   flex-wrap: wrap;
   align-content: center;
   justify-content: center;
-  height: 90%;
+  height: 86%;
   padding: 1%;
 }
 .loading {
@@ -190,7 +199,7 @@ export default {
   overflow-x: hidden;
   overflow-y: scroll;
   height: 90%;
-
+  border: 2px solid whitesmoke;
   padding-right: 6px;
 }
 .move {
@@ -316,8 +325,10 @@ p {
     background-color: #293037;
   }
   .character {
-    padding: 2%;
-    width: 20%;
+    padding: 1%;
+    margin: 1%;
+    min-width: fit-content;
+    width: 25%;
     text-align: center;
   }
   .moves {
