@@ -21,7 +21,9 @@
             <div class="move_name">{{ item.move }}</div>
             <div class="move_inputs">
               <div v-for="item in item.inputs" :key="item.id" class="input">
-                <img class="item" v-if="isItem(item)" :src="require('../assets/' + item + '.webp')" />
+                <!-- <img class="item" v-if="isItem(item)" :src="require('../assets/' + item + '.svg')" /> -->
+                
+                <img v-if="isItem(item)" :src="require('../assets/' + item + '.svg')" class="inputs"/>
                 <div v-else>{{item}}</div>
               </div>
             </div>
@@ -128,7 +130,7 @@ export default {
     isItem(input) {
       let isImg = false;
       try {
-        require("../assets/" + input + ".webp");
+        require("../assets/" + input + ".svg");
         isImg = true;
       } catch {
         isImg = false;
@@ -251,6 +253,10 @@ h1 {
 .input {
   padding: 3px;
   align-self: center;
+}
+.inputs {
+  width: 40px;
+  height: 40px;
 }
 .move:hover {
   background-color: #004f81;
